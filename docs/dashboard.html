@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailVision - Analytics Dashboard (Static Demo)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Redirect if session does not exist
+        if (!localStorage.getItem('username')) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</head>
+<body>
+    <div class="glow-bg-1"></div>
+    <div class="glow-bg-2"></div>
+
+    <!-- Navigation Header -->
+    <nav class="dashboard-navbar d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <span class="logo-icon me-2" style="font-size: 1.8rem;">👁️</span>
+            <h1 class="nav-title">RetailVision</h1>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="nav-user-tag" id="user-role-badge">Role: Guest</span>
+            <button onclick="handleLogout()" class="btn-logout">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4 py-4">
+        <!-- KPI Dashboard Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="kpi-card visitors">
+                    <span class="kpi-icon">👥</span>
+                    <div class="kpi-info">
+                        <h3>Total Visitors</h3>
+                        <p id="kpi-total">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="kpi-card active-cust">
+                    <span class="kpi-icon">🟢</span>
+                    <div class="kpi-info">
+                        <h3>Current Customers</h3>
+                        <p id="kpi-current">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="kpi-card dwell">
+                    <span class="kpi-icon">⏱️</span>
+                    <div class="kpi-info">
+                        <h3>Avg Stay Duration</h3>
+                        <p id="kpi-dwell">0s</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="kpi-card peak">
+                    <span class="kpi-icon">⚡</span>
+                    <div class="kpi-info">
+                        <h3>Peak Hour</h3>
+                        <p id="kpi-peak">N/A</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="row g-4">
+            <!-- Left Column: Video Feed & Heatmap -->
+            <div class="col-lg-8">
+                <!-- Video Stream Panel -->
+                <div class="dashboard-grid-panel mb-4">
+                    <div class="panel-title">
+                        <span>📹 CCTV Live Camera Analytics (Simulated)</span>
+                        <div>
+                            <label class="form-label-custom me-2" style="font-size:0.75rem;">Mode:</label>
+                            <span class="badge bg-success" style="font-size:0.8rem;">Static Interactive Prototype</span>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <!-- Canvas replacing the Flask video feed stream -->
+                        <canvas id="video-canvas" width="1280" height="720" class="video-feed-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Heatmap Generation Panel -->
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="dashboard-grid-panel">
+                            <div class="panel-title">
+                                <span>🗺️ Customer Traffic Heatmap (Real-Time Overlay)</span>
+                                <button class="btn btn-sm btn-outline-light" onclick="resetHeatmapData()" style="font-size:0.8rem; border-color:rgba(255,255,255,0.15);">🔄 Reset Heatmap</button>
+                            </div>
+                            <div class="heatmap-wrapper">
+                                <!-- Canvas overlay replacing static heatmap.png -->
+                                <canvas id="heatmap-canvas" width="1280" height="720" class="heatmap-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Alerts & Chart Stats -->
+            <div class="col-lg-4">
+                <!-- System Alerts -->
+                <div class="dashboard-grid-panel mb-4">
+                    <div class="panel-title">
+                        <span>🔔 Real-Time AI System Alerts</span>
+                        <span class="badge bg-danger animate-pulse" id="alert-indicator" style="font-size: 0.75rem;">Active</span>
+                    </div>
+                    <div class="alerts-log" id="alerts-container">
+                        <!-- Simulated alert logs will load dynamically here -->
+                        <div class="alert-item">
+                            <div class="alert-time">System Startup</div>
+                            RetailVision simulation engine initialized. Monitoring zones...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hourly Visitor Trends Chart -->
+                <div class="dashboard-grid-panel mb-4">
+                    <div class="panel-title">
+                        <span>📈 Hourly Traffic Trend</span>
+                    </div>
+                    <div style="height: 180px; position: relative;">
+                        <canvas id="hourlyChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Zone Breakdown Analytics -->
+                <div class="dashboard-grid-panel">
+                    <div class="panel-title">
+                        <span>🏷️ Zone Traffic Breakdown</span>
+                    </div>
+                    <div class="table-responsive mb-3">
+                        <table class="table table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Zone</th>
+                                    <th class="text-center">Visits</th>
+                                    <th class="text-center">Avg Dwell</th>
+                                </tr>
+                            </thead>
+                            <tbody id="zone-table-body">
+                                <!-- Dynamically populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="height: 180px; position: relative;">
+                        <canvas id="zoneChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Control panel -->
+        <div class="row mt-4 mb-5">
+            <div class="col-12">
+                <div class="dashboard-grid-panel d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div>
+                        <h4 style="font-size:1.1rem; margin:0 0 5px 0; font-weight:600;">Reports & Controls</h4>
+                        <p style="color:var(--text-secondary); font-size:0.82rem; margin:0;">Compile printable reports directly from the browser window or reset the database simulation.</p>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <button onclick="window.print()" class="btn-report-download">📥 Print Analytics Report</button>
+                        <button id="admin-reset-btn" onclick="clearDatabase()" class="btn-clear-db d-none">⚠️ Reset Simulation DB</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script imports -->
+    <script src="dashboard.js"></script>
+</body>
+</html>

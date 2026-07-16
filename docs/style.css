@@ -1,0 +1,370 @@
+:root {
+    --bg-dark: #090d16;
+    --card-bg: rgba(17, 25, 40, 0.65);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-blue: #3b82f6;
+    --accent-indigo: #6366f1;
+    --accent-cyan: #06b6d4;
+    --accent-orange: #f97316;
+    --accent-red: #ef4444;
+    --accent-green: #10b981;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Background Glowing Accents */
+.glow-bg-1 {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.glow-bg-2 {
+    position: absolute;
+    bottom: 10%;
+    right: 15%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Navbar */
+.dashboard-navbar {
+    background: rgba(9, 13, 22, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 30px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-user-tag {
+    background-color: rgba(99, 102, 241, 0.15);
+    color: var(--accent-indigo);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-logout {
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--accent-red);
+    background: transparent;
+    padding: 5px 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: var(--accent-red);
+    color: white;
+}
+
+/* Dashboard Cards (KPI) */
+.kpi-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+}
+
+.kpi-card.visitors::after { background: var(--accent-indigo); }
+.kpi-card.dwell::after { background: var(--accent-cyan); }
+.kpi-card.active-cust::after { background: var(--accent-green); }
+.kpi-card.peak::after { background: var(--accent-orange); }
+
+.kpi-icon {
+    font-size: 2.2rem;
+    margin-right: 20px;
+    opacity: 0.85;
+}
+
+.kpi-info h3 {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 5px 0;
+}
+
+.kpi-info p {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Grid Layout Panels */
+.dashboard-grid-panel {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 20px;
+    height: 100%;
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 12px;
+}
+
+/* Video simulation elements */
+.video-wrapper {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #0d111a;
+    aspect-ratio: 16/9;
+}
+
+.video-feed-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Alerts Log */
+.alerts-log {
+    max-height: 330px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.alerts-log::-webkit-scrollbar {
+    width: 4px;
+}
+.alerts-log::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.alert-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    font-size: 0.88rem;
+    animation: slideIn 0.3s ease;
+}
+
+.alert-item.alert-danger {
+    border-left-color: var(--accent-red);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.alert-item.alert-warning {
+    border-left-color: var(--accent-orange);
+    background: rgba(249, 115, 22, 0.05);
+}
+
+.alert-time {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Table Style */
+.table-custom {
+    color: var(--text-primary);
+    margin-bottom: 0;
+}
+
+.table-custom th {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-color: var(--border-color);
+    padding: 12px 15px;
+}
+
+.table-custom td {
+    background-color: transparent !important;
+    border-color: rgba(255, 255, 255, 0.04);
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.btn-report-download {
+    background: linear-gradient(135deg, var(--accent-indigo), var(--accent-cyan));
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: filter 0.2s;
+}
+
+.btn-report-download:hover {
+    filter: brightness(1.1);
+    color: white;
+}
+
+.btn-clear-db {
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: var(--accent-red);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-clear-db:hover {
+    background-color: var(--accent-red);
+    color: white;
+}
+
+.badge-custom {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+/* Dynamic Heatmap blueprint container */
+.heatmap-wrapper {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #0b0f19;
+    aspect-ratio: 16/9;
+    border: 1px solid var(--border-color);
+}
+
+.heatmap-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* --- Media Print Styles for PDF Generation --- */
+@media print {
+    body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 12pt;
+    }
+    
+    .glow-bg-1, .glow-bg-2, .dashboard-navbar, .btn-logout, .btn-report-download, .btn-clear-db, .panel-title button, #source-select, label[for="source-select"], .source-select-custom, .badge {
+        display: none !important;
+    }
+
+    .kpi-card {
+        background: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+
+    .kpi-card::after {
+        display: none !important;
+    }
+
+    .dashboard-grid-panel {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #000000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        margin-bottom: 20px !important;
+    }
+
+    .panel-title {
+        color: #000000 !important;
+        border-bottom: 1px solid #cbd5e1 !important;
+    }
+
+    .video-wrapper {
+        border: 1px solid #000000 !important;
+    }
+
+    .table-custom th {
+        background-color: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+
+    .table-custom td {
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+
+    /* Print layout header */
+    body::before {
+        content: "RETAILVISION - AI CUSTOMER BEHAVIOR ANALYTICS REPORT";
+        display: block;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18pt;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #000000;
+        padding-bottom: 10px;
+    }
+}
